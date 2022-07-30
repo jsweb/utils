@@ -5,9 +5,10 @@
   "description": "JS lib with useful stuff for web development",
   "scripts": {
     "dev": "rm -rf lib && tsc -w",
+    "test": "exit 0",
     "prepublishOnly": "rm -rf lib && tsc",
     "upd8": "rm -rf node_modules && pnpm i",
-    "g:push": "git push --tags",
+    "g:push": "git push && git push --tags",
     "v:patch": "npm version patch && npm run g:push",
     "v:minor": "npm version minor && npm run g:push",
     "v:major": "npm version major && npm run g:push"
