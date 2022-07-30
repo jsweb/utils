@@ -4,9 +4,9 @@
   "type": "module",
   "description": "JS lib with useful stuff for web development",
   "scripts": {
-    "dev": "rm -rf lib && tsc -w",
     "test": "exit 0",
-    "prepublishOnly": "rm -rf lib && tsc",
+    "dev": "rm -rf dist && tsc -w",
+    "prepublishOnly": "rm -rf dist && tsc",
     "upd8": "rm -rf node_modules && pnpm i",
     "g:push": "git push && git push --tags",
     "v:patch": "npm version patch && npm run g:push",
@@ -30,7 +30,6 @@
   },
   "homepage": "https://github.com/jsweb/utils#readme",
   "devDependencies": {
-    "npm-run-all": "latest",
     "typescript": "latest"
   }
 }
