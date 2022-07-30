@@ -1,0 +1,32 @@
+{
+  "name": "@jsweb/utils",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "JS lib with useful stuff for web development",
+  "scripts": {
+    "dev": "rm -rf lib && tsc -w",
+    "prepare": "rm -rf lib && tsc",
+    "publish": "npm publish lib --access public",
+    "upd8": "rm -rf node_modules && pnpm i"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsweb/utils.git"
+  },
+  "keywords": [
+    "JS",
+    "TS",
+    "Web",
+    "utilities"
+  ],
+  "author": "Alex Bruno Cáceres <contato@alexbruno.dev>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jsweb/utils/issues"
+  },
+  "homepage": "https://github.com/jsweb/utils#readme",
+  "devDependencies": {
+    "npm-run-all": "latest",
+    "typescript": "latest"
+  }
+}

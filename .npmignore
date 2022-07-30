@@ -1,8 +1,6 @@
-lib
+src
 
 # Dependencies
-node_modules
-package-lock.json
 pnpm-lock.yaml
 yarn.lock
 
@@ -10,4 +8,5 @@ yarn.lock
 *.log
 
 # Build
+tsconfig.json
 *.tsbuildinfo
