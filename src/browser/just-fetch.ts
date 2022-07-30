@@ -1,17 +1,17 @@
-export interface SimpleFetchSetup {
+export interface JustFetchSetup {
   baseUrl: string
   headers: RequestInit['headers']
 }
 
-const defaultSetup: SimpleFetchSetup = {
+const defaultSetup: JustFetchSetup = {
   baseUrl: '',
   headers: {},
 }
 
-export class SimpleFetch {
+export class JustFetch {
   private config = defaultSetup
 
-  constructor(config: SimpleFetchSetup = defaultSetup) {
+  constructor(config: JustFetchSetup = defaultSetup) {
     this.config = config
   }
 
