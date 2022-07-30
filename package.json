@@ -3,6 +3,7 @@
   "version": "0.0.7",
   "type": "module",
   "description": "JS lib with useful stuff for web development",
+  "exports": "./lib",
   "scripts": {
     "test": "exit 0",
     "dev": "rm -rf lib && tsc -w",
