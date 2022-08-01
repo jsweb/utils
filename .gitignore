@@ -11,3 +11,6 @@ yarn.lock
 
 # Build
 *.tsbuildinfo
+
+# Test coverage
+coverage

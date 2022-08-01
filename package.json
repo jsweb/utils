@@ -7,7 +7,7 @@
     "lib"
   ],
   "scripts": {
-    "test": "exit 0",
+    "test": "jest",
     "dev": "rm -rf lib && tsc -w",
     "prepublishOnly": "rm -rf lib && tsc",
     "upd8": "rm -rf node_modules && pnpm i",
@@ -33,6 +33,12 @@
   },
   "homepage": "https://github.com/jsweb/utils#readme",
   "devDependencies": {
+    "@types/jest": "latest",
+    "@types/node": "latest",
+    "jest": "latest",
+    "jest-environment-jsdom": "latest",
+    "ts-jest": "latest",
+    "ts-node": "latest",
     "typescript": "latest"
   }
 }
