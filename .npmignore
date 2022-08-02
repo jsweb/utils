@@ -15,4 +15,4 @@ tsconfig.json
 # Tests
 tests
 coverage
-jest.config.js
+jest.config.ts
