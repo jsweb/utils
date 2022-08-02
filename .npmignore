@@ -12,5 +12,6 @@ yarn.lock
 tsconfig.json
 *.tsbuildinfo
 
-# Test coverage
+# Tests
+tests
 coverage
