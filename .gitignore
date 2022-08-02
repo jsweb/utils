@@ -11,6 +11,8 @@ yarn.lock
 
 # Build
 *.tsbuildinfo
+browser
+modules
 
 # Test coverage
 coverage
