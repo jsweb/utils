@@ -1,6 +1,6 @@
-lib
-browser
-modules
+/lib
+/web
+/modules
 
 # Dependencies
 node_modules

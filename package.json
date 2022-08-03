@@ -11,7 +11,7 @@
     "v:patch": "npm version patch && npm run g:push",
     "v:minor": "npm version minor && npm run g:push",
     "v:major": "npm version major && npm run g:push",
-    "build:dev": "rm -rf lib && tsc",
+    "build:dev": "rm -rf lib modules web && tsc",
     "build:publish": "tsc -p tsconfig.build.json",
     "prepublishOnly": "npm run build:publish"
   },
