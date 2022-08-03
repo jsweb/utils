@@ -4,7 +4,7 @@
   "type": "module",
   "description": "JS lib with useful stuff for web development",
   "scripts": {
-    "test": "jest",
+    "test": "tsc --noEmit && jest",
     "dev": "jest --watch",
     "upd8": "rm -rf node_modules && pnpm i",
     "g:push": "git push && git push --tags",

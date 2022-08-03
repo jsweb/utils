@@ -17,7 +17,10 @@ export interface JustFetchConfig {
  * @implements {Fetchable}
  */
 export class JustFetch {
-  config: JustFetchConfig = {}
+  config: JustFetchConfig = {
+    base: '',
+    headers: {},
+  }
 
   /**
    * Creates an instance of JustFetch.
@@ -25,12 +28,11 @@ export class JustFetch {
    * @instance JustFetch
    */
   constructor(config: JustFetchConfig = {} as JustFetchConfig) {
-    this.config.base = config.base || ''
-    this.config.headers = config.headers || {}
+    if (config.base) this.config.base = config.base
+    if (config.headers) this.config.headers = config.headers
 
     if (config.fetch) this.config.fetch = config.fetch
     else if (typeof fetch === 'function') this.config.fetch = fetch
-    else throw new Error('fetch is not defined')
   }
 
   /**
@@ -42,6 +44,8 @@ export class JustFetch {
    * @memberof JustFetch
    */
   fetch(url: string, init: RequestInit = {}): Promise<Response> {
+    if (!this.config.fetch) throw new Error('Fetch API is not defined')
+
     const { base, headers } = this.config
     const fetchUrl = base + url
     const fetchInit: RequestInit = {
@@ -51,6 +55,7 @@ export class JustFetch {
         ...init.headers,
       },
     }
+
     return this.config.fetch(fetchUrl, fetchInit)
   }
 
