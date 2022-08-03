@@ -5,13 +5,15 @@
   "description": "JS lib with useful stuff for web development",
   "scripts": {
     "test": "jest",
-    "dev": "rm -rf lib && tsc -w",
+    "dev": "jest --watch",
     "upd8": "rm -rf node_modules && pnpm i",
     "g:push": "git push && git push --tags",
     "v:patch": "npm version patch && npm run g:push",
     "v:minor": "npm version minor && npm run g:push",
     "v:major": "npm version major && npm run g:push",
-    "prepublishOnly": "tsc"
+    "build:dev": "rm -rf lib && tsc",
+    "build:publish": "tsc -p tsconfig.build.json",
+    "prepublishOnly": "npm run build:publish"
   },
   "repository": {
     "type": "git",
@@ -30,6 +32,7 @@
   },
   "homepage": "https://github.com/jsweb/utils#readme",
   "devDependencies": {
+    "@jsweb/params": "latest",
     "@types/jest": "latest",
     "@types/node": "latest",
     "jest": "latest",

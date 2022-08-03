@@ -67,9 +67,7 @@ export default {
   // A set of global variables that need to be available in all test environments
   globals: {
     'ts-jest': {
-      // tsconfig: 'tsconfig.json',
       isolatedModules: true,
-      // diagnostics: true,
     },
   },
 
@@ -129,7 +127,7 @@ export default {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: [],
+  setupFiles: ['<rootDir>/tests/setup.ts'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
@@ -150,11 +148,7 @@ export default {
   // testLocationInResults: false,
 
   // The glob patterns Jest uses to detect test files
-  testMatch: [
-    '**/tests/**/*.ts',
-    // "**/__tests__/**/*.[jt]s?(x)",
-    // "**/?(*.)+(spec|test).[tj]s?(x)"
-  ],
+  testMatch: ['<rootDir>/tests/*/*.ts'],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   testPathIgnorePatterns: ['/node_modules/'],

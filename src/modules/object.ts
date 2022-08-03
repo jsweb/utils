@@ -13,7 +13,7 @@
  */
 export function getPropertyValue<T>(
   obj: any,
-  path: string,
+  path: string | string[],
   value?: any
 ): T | any | undefined {
   let current = obj

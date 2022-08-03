@@ -1,4 +1,6 @@
 lib
+browser
+modules
 
 # Dependencies
 node_modules
@@ -11,8 +13,6 @@ yarn.lock
 
 # Build
 *.tsbuildinfo
-browser
-modules
 
 # Test coverage
 coverage
