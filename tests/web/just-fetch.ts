@@ -1,8 +1,13 @@
-import { JustFetch } from '../../src/web/just-fetch'
+import { JustFetch, JustFetchConfig } from '../../src/web/just-fetch'
 
 describe('JustFetch', () => {
   let justFetch: JustFetch
   let jfetch: jest.SpyInstance
+  const config: JustFetchConfig = {
+    fetch,
+    base: '',
+    headers: {},
+  }
 
   beforeEach(() => {
     justFetch = new JustFetch()
@@ -22,21 +27,26 @@ describe('JustFetch', () => {
   })
 
   it('should return an instance of JustFetch with default config', () => {
-    expect(justFetch.config).toEqual({
-      base: '',
-      headers: {},
-    })
+    expect(justFetch.config).toMatchObject(config)
   })
 
-  it('should return an instance of JustFetch with config', () => {
-    const config = {
+  it('should return an instance of JustFetch with custom config', () => {
+    const custom = {
       base: 'lorem-ipsum',
       headers: {
         'lorem-ipsum': 'dolor-sit-amet',
       },
     }
-    const justFetch = new JustFetch(config)
-    expect(justFetch.config).toEqual(config)
+    const result = Object.assign({}, config, custom)
+
+    const justFetch = new JustFetch(custom)
+    expect(justFetch.config).toMatchObject(result)
+  })
+
+  it('should accept a custom fetch function', () => {
+    const custom = { fetch: jest.fn() }
+    const justFetch = new JustFetch(custom)
+    expect(justFetch.config.fetch).toBe(custom.fetch)
   })
 
   it('should implement the setURL utility method', () => {
@@ -67,9 +77,23 @@ describe('JustFetch', () => {
     expect(typeof justFetch.patchJSON).toBe('function')
   })
 
-  it('fetch method should return a Promise', () => {
-    const resp = justFetch.fetch('/')
-    expect(resp).toBeInstanceOf(Promise)
+  describe('fetch method', () => {
+    it('should return a Promise', () => {
+      const resp = justFetch.fetch('/')
+      expect(resp).toBeInstanceOf(Promise)
+    })
+
+    it('should call config.fetch with the correct arguments', () => {
+      const init = {
+        headers: {
+          'lorem-ipsum': 'dolor-sit-amet',
+        },
+      }
+      const spy = jest.spyOn(justFetch.config, 'fetch')
+
+      justFetch.fetch('/', init)
+      expect(spy).toHaveBeenCalledWith('/', init)
+    })
   })
 
   describe('get method', () => {

@@ -4,8 +4,9 @@ export interface SlulgifyOptions {
 }
 
 /**
- * Normalizes a string replacing special characters with simpler ASCII equivalents and spaces with dashes.
- * The normalization can be customized by providing a `NormalizeOptions` object as the second argument.
+ * Transforms a string into a slulgified string.
+ * Normalizes the string by replacing spaces with dashes and special characters with simpler ASCII equivalents.
+ * It is possible to transform the string into full lowercase or full uppercase by setting the `lower` or `upper` options.
  *
  * @export
  * @param {string} text

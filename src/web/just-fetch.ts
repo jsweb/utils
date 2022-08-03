@@ -1,27 +1,36 @@
 export interface JustFetchConfig {
-  base: string
-  headers: Headers | HeadersInit
+  base?: string
+  headers?: Headers | HeadersInit
+  fetch?: (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>
 }
 
 /**
- * JustFetch is a simple wrapper around the fetch API.
+ * JustFetch is a simple wrapper around the Fetch API.
  * It provides a simple way to make HTTP requests and parse the response as JSON with useful methods.
- * The constructor accepts a configuration object to create an instance of JustFetch with some basic setup options to be used by all methods.
+ * The constructor accepts a configuration object to create an instance of JustFetch with custom setup options to be used by all methods.
+ * Support for a custom base fetch function to be used by the instance, but it needs to match the Fetch API. Useful for Node.js, tests, mocks, etc.
  *
  * @export {class} JustFetch
  * @class JustFetch
+ * @implements {JustFetchConfig}
+ * @implements {Fetch}
+ * @implements {Fetchable}
  */
 export class JustFetch {
-  config: JustFetchConfig = {
-    base: '',
-    headers: {},
-  }
+  config: JustFetchConfig = {}
 
-  constructor(config?: JustFetchConfig) {
-    this.config = {
-      ...this.config,
-      ...config,
-    }
+  /**
+   * Creates an instance of JustFetch.
+   * @param {JustFetchConfig} [config={}] The configuration object to setup the instance.
+   * @instance JustFetch
+   */
+  constructor(config: JustFetchConfig = {} as JustFetchConfig) {
+    this.config.base = config.base || ''
+    this.config.headers = config.headers || {}
+
+    if (config.fetch) this.config.fetch = config.fetch
+    else if (typeof fetch === 'function') this.config.fetch = fetch
+    else throw new Error('fetch is not defined')
   }
 
   /**
@@ -42,7 +51,7 @@ export class JustFetch {
         ...init.headers,
       },
     }
-    return fetch(fetchUrl, fetchInit)
+    return this.config.fetch(fetchUrl, fetchInit)
   }
 
   /**
