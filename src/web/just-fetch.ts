@@ -31,8 +31,11 @@ export class JustFetch {
     if (config.base) this.config.base = config.base
     if (config.headers) this.config.headers = config.headers
 
-    if (config.fetch) this.config.fetch = config.fetch
-    else if (typeof fetch === 'function') this.config.fetch = fetch
+    this.config.fetch = (...args) => {
+      if (typeof config.fetch === 'function') return config.fetch(...args)
+      else if (typeof fetch === 'function') return fetch(...args)
+      else throw new Error('Fetch API is not defined')
+    }
   }
 
   /**
@@ -65,11 +68,11 @@ export class JustFetch {
    * The params serialization is done using the URLSearchParams class.
    *
    * @param {string} url The URL to set.
-   * @param {{ [key: string]: any } | null} [params] The params object to serialize and add to the URL as query string.
+   * @param {Record<string, any> | null} [params] The params object to serialize and add to the URL as query string.
    * @return {string} The URL with or without a query string.
    * @memberof JustFetch
    */
-  setURL(url: string, params?: { [key: string]: any } | null): string {
+  setURL(url: string, params?: Record<string, any> | null): string {
     if (!params) return url
 
     const query = new URLSearchParams()
@@ -93,19 +96,14 @@ export class JustFetch {
    * For any other data type, the data is set as body payload and custom content type header can be set in the headers object.
    *
    * @param {string} method The request method.
-   * @param {({ [key: string]: any } | FormData | HTMLFormElement | BodyInit | null)} [data] The data object to set as body payload.
+   * @param {(Record<string, any> | FormData | HTMLFormElement | BodyInit | null)} [data] The data object to set as body payload.
    * @param {Headers} [headers] The headers object to set in the RequestInit object.
    * @return {RequestInit} RequestInit
    * @memberof JustFetch
    */
   payloadRequestInit(
     method: string,
-    data?:
-      | { [key: string]: any }
-      | FormData
-      | HTMLFormElement
-      | BodyInit
-      | null,
+    data?: Record<string, any> | FormData | HTMLFormElement | BodyInit | null,
     headers?: Headers | HeadersInit
   ): RequestInit {
     let init: RequestInit = { method }
@@ -142,14 +140,14 @@ export class JustFetch {
    * The url and params are processed by the setURL method to properly set the URL with or without a query string.
    *
    * @param {string} url The URL to fetch.
-   * @param {{ [key: string]: any } | null} [params] The params object to serialize and add to the URL as query string.
+   * @param {Record<string, any> | null} [params] The params object to serialize and add to the URL as query string.
    * @param {Headers} [headers] The headers object to set in the request headers.
    * @return {Promise} Promise
    * @memberof JustFetch
    */
   get(
     url: string,
-    params?: { [key: string]: any } | null,
+    params?: Record<string, any> | null,
     headers?: Headers | HeadersInit
   ): Promise<Response> {
     const result = this.setURL(url, params)
@@ -162,14 +160,14 @@ export class JustFetch {
    * The url and params are processed by the setURL method to properly set the URL with or without a query string.
    *
    * @param {string} url The URL to fetch.
-   * @param {{ [key: string]: any } | null} [params] The params object to serialize and add to the URL as query string.
+   * @param {Record<string, any> | null} [params] The params object to serialize and add to the URL as query string.
    * @param {Headers} [headers] The headers object to set in the request headers.
    * @return {Promise} Promise
    * @memberof JustFetch
    */
   delete(
     url: string,
-    params?: { [key: string]: any } | null,
+    params?: Record<string, any> | null,
     headers?: Headers | HeadersInit
   ): Promise<Response> {
     const result = this.setURL(url, params)
@@ -182,19 +180,14 @@ export class JustFetch {
    * The data and headers objects are processed by the payloadRequestInit method and properly set as RequestInit.
    *
    * @param {string} url The URL to fetch.
-   * @param {{ [key: string]: any } | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
+   * @param {Record<string, any> | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
    * @param {Headers} [headers] The headers object to set in the request headers.
    * @return {Promise} Promise
    * @memberof JustFetch
    */
   post(
     url: string,
-    data?:
-      | { [key: string]: any }
-      | HTMLFormElement
-      | FormData
-      | BodyInit
-      | null,
+    data?: Record<string, any> | HTMLFormElement | FormData | BodyInit | null,
     headers?: Headers | HeadersInit
   ): Promise<Response> {
     const init = this.payloadRequestInit('POST', data, headers)
@@ -206,19 +199,14 @@ export class JustFetch {
    * The data and headers objects are processed by the payloadRequestInit method and properly set as RequestInit.
    *
    * @param {string} url The URL to fetch.
-   * @param {{ [key: string]: any } | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
+   * @param {Record<string, any> | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
    * @param {Headers} [headers] The headers object to set in the request headers.
    * @return {Promise} Promise
    * @memberof JustFetch
    */
   put(
     url: string,
-    data?:
-      | { [key: string]: any }
-      | HTMLFormElement
-      | FormData
-      | BodyInit
-      | null,
+    data?: Record<string, any> | HTMLFormElement | FormData | BodyInit | null,
     headers?: Headers | HeadersInit
   ): Promise<Response> {
     const init = this.payloadRequestInit('PUT', data, headers)
@@ -230,19 +218,14 @@ export class JustFetch {
    * The data and headers objects are processed by the payloadRequestInit method and properly set as RequestInit.
    *
    * @param {string} url The URL to fetch.
-   * @param {{ [key: string]: any } | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
+   * @param {Record<string, any> | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
    * @param {Headers} [headers] The headers object to set in the request headers.
    * @return {Promise} Promise
    * @memberof JustFetch
    */
   patch(
     url: string,
-    data?:
-      | { [key: string]: any }
-      | HTMLFormElement
-      | FormData
-      | BodyInit
-      | null,
+    data?: Record<string, any> | HTMLFormElement | FormData | BodyInit | null,
     headers?: Headers | HeadersInit
   ): Promise<Response> {
     const init = this.payloadRequestInit('PATCH', data, headers)
@@ -267,14 +250,14 @@ export class JustFetch {
    * Just a wrapper around the get method parsing the response as JSON.
    *
    * @param {string} url The URL to fetch.
-   * @param {{ [key: string]: any } | null} [params] The params object to serialize and add to the URL as query string.
+   * @param {Record<string, any> | null} [params] The params object to serialize and add to the URL as query string.
    * @param {Headers} [headers] The headers object to set in the request headers.
    * @return {Promise} Promise
    * @memberof JustFetch
    */
   async getJSON(
     url: string,
-    params?: { [key: string]: any } | null,
+    params?: Record<string, any> | null,
     headers?: Headers | HeadersInit
   ): Promise<any> {
     const resp = await this.get(url, params, headers)
@@ -286,14 +269,14 @@ export class JustFetch {
    * Just a wrapper around the delete method parsing the response as JSON.
    *
    * @param {string} url The URL to fetch.
-   * @param {{ [key: string]: any } | null} [params] The params object to serialize and add to the URL as query string.
+   * @param {Record<string, any> | null} [params] The params object to serialize and add to the URL as query string.
    * @param {Headers} [headers] The headers object to set in the request headers.
    * @return {Promise} Promise
    * @memberof JustFetch
    */
   async deleteJSON(
     url: string,
-    params?: { [key: string]: any } | null,
+    params?: Record<string, any> | null,
     headers?: Headers | HeadersInit
   ): Promise<any> {
     const resp = await this.delete(url, params, headers)
@@ -305,19 +288,14 @@ export class JustFetch {
    * Just a wrapper around the post method parsing the response as JSON.
    *
    * @param {string} url The URL to fetch.
-   * @param {{ [key: string]: any } | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
+   * @param {Record<string, any> | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
    * @param {Headers} [headers] The headers object to set in the request headers.
    * @return {Promise} Promise
    * @memberof JustFetch
    */
   async postJSON(
     url: string,
-    data?:
-      | { [key: string]: any }
-      | HTMLFormElement
-      | FormData
-      | BodyInit
-      | null,
+    data?: Record<string, any> | HTMLFormElement | FormData | BodyInit | null,
     headers?: Headers | HeadersInit
   ): Promise<any> {
     const resp = await this.post(url, data, headers)
@@ -329,19 +307,14 @@ export class JustFetch {
    * Just a wrapper around the put method parsing the response as JSON.
    *
    * @param {string} url The URL to fetch.
-   * @param {{ [key: string]: any } | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
+   * @param {Record<string, any> | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
    * @param {Headers} [headers] The headers object to set in the request headers.
    * @return {Promise} Promise
    * @memberof JustFetch
    */
   async putJSON(
     url: string,
-    data?:
-      | { [key: string]: any }
-      | HTMLFormElement
-      | FormData
-      | BodyInit
-      | null,
+    data?: Record<string, any> | HTMLFormElement | FormData | BodyInit | null,
     headers?: Headers | HeadersInit
   ): Promise<any> {
     const resp = await this.put(url, data, headers)
@@ -353,19 +326,14 @@ export class JustFetch {
    * Just a wrapper around the patch method parsing the response as JSON.
    *
    * @param {string} url The URL to fetch.
-   * @param {{ [key: string]: any } | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
+   * @param {Record<string, any> | FormData | HTMLFormElement | BodyInit | null} [data] The data object to set as body payload.
    * @param {Headers} [headers] The headers object to set in the request headers.
    * @return {Promise} Promise
    * @memberof JustFetch
    */
   async patchJSON(
     url: string,
-    data?:
-      | { [key: string]: any }
-      | HTMLFormElement
-      | FormData
-      | BodyInit
-      | null,
+    data?: Record<string, any> | HTMLFormElement | FormData | BodyInit | null,
     headers?: Headers | HeadersInit
   ): Promise<any> {
     const resp = await this.patch(url, data, headers)

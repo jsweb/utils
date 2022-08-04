@@ -4,9 +4,9 @@ describe('JustFetch', () => {
   let justFetch: JustFetch
   let jfetch: jest.SpyInstance
   const config: JustFetchConfig = {
-    fetch,
     base: '',
     headers: {},
+    fetch: (...args) => fetch(...args),
   }
 
   beforeEach(() => {
@@ -27,7 +27,9 @@ describe('JustFetch', () => {
   })
 
   it('should return an instance of JustFetch with default config', () => {
-    expect(justFetch.config).toMatchObject(config)
+    expect(justFetch.config.base).toBe('')
+    expect(justFetch.config.headers).toEqual({})
+    expect(justFetch.config.fetch).toBeInstanceOf(Function)
   })
 
   it('should return an instance of JustFetch with custom config', () => {
@@ -37,16 +39,19 @@ describe('JustFetch', () => {
         'lorem-ipsum': 'dolor-sit-amet',
       },
     }
-    const result = Object.assign({}, config, custom)
-
     const justFetch = new JustFetch(custom)
-    expect(justFetch.config).toMatchObject(result)
+
+    expect(justFetch.config.base).toBe(custom.base)
+    expect(justFetch.config.headers).toEqual(custom.headers)
   })
 
-  it('should accept a custom fetch function', () => {
-    const custom = { fetch: jest.fn() }
-    const justFetch = new JustFetch(custom)
-    expect(justFetch.config.fetch).toBe(custom.fetch)
+  it('should set a config.fetch function', () => {
+    expect(justFetch.config.fetch).toBeDefined()
+    expect(typeof justFetch.config.fetch).toBe('function')
+
+    const jf = new JustFetch({ fetch: jest.fn() })
+    expect(justFetch.config.fetch).toBeDefined()
+    expect(typeof justFetch.config.fetch).toBe('function')
   })
 
   it('should implement the setURL utility method', () => {
