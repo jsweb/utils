@@ -9,6 +9,7 @@ export interface SlulgifyOptions {
  * It is possible to transform the string into full lowercase or full uppercase by setting the `lower` or `upper` options.
  *
  * @export
+ * @function slulgify
  * @param {string} text
  * @param {SlulgifyOptions} [options={}]
  * @return {string}

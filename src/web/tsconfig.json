@@ -1,9 +1,7 @@
 {
   "compilerOptions": {
-    "composite": true /* Enable constraints that allow a TypeScript project to be used with project references. */,
-    "lib": [
-      "DOM",
-      "ESNext"
-    ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */
+    "composite": true,
+    "lib": ["DOM", "ESNext"],
+    "types": ["@cloudflare/workers-types"]
   }
 }

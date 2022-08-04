@@ -4,7 +4,8 @@
  * This is exacly the same as `lodash.get(object, path, value)` but this is made with cleaner, smarter and modern code,
  * with no bloat imports like the lodash method.
  *
- * @export {function} getPropertyValue
+ * @export
+ * @function getPropertyValue
  * @template T
  * @param {*} obj
  * @param {string} path

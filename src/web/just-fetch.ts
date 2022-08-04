@@ -10,7 +10,7 @@ export interface JustFetchConfig {
  * The constructor accepts a configuration object to create an instance of JustFetch with custom setup options to be used by all methods.
  * Support for a custom base fetch function to be used by the instance, but it needs to match the Fetch API. Useful for Node.js, tests, mocks, etc.
  *
- * @export {class} JustFetch
+ * @export
  * @class JustFetch
  * @implements {JustFetchConfig}
  * @implements {Fetch}

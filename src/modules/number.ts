@@ -1,7 +1,8 @@
 /**
  * Formats a given number to a localized string.
  *
- * @export {function} formatNumber
+ * @export
+ * @function formatNumber
  * @param {number} number A number or a numeric string
  * @param {string} locale A locale code
  * @param {number} [decimals=0] The number of decimals, defaults to 0
@@ -22,7 +23,8 @@ export function formatNumber(
 /**
  * Formats a given number to a localized currency string.
  *
- * @export {function} formatCurrency
+ * @export
+ * @function formatCurrency
  * @param {number} number A number or a numeric string
  * @param {string} locale A locale code
  * @param {string} currency A currency code

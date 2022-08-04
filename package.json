@@ -32,6 +32,7 @@
   },
   "homepage": "https://github.com/jsweb/utils#readme",
   "devDependencies": {
+    "@cloudflare/workers-types": "latest",
     "@jsweb/params": "latest",
     "@types/jest": "latest",
     "@types/node": "latest",
