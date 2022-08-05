@@ -9,9 +9,9 @@ export class DisqusComments extends LitElement {
   @property({ type: String }) identifier = ''
   @property({ type: String }) site = ''
   @property({ type: String }) shortname = ''
-  @property({ type: String }) category_id = ''
   @property({ type: Number }) delay = 0
-  @property({ type: Boolean }) onEnter = false
+  @property({ type: String, attribute: 'category-id' }) category_id = ''
+  @property({ type: Boolean, attribute: 'on-enter' }) onEnter = false
 
   private setup: CommentsConfig = {} as CommentsConfig
   private comments: Comments = {} as Comments
