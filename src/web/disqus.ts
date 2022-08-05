@@ -25,6 +25,7 @@ export interface Comments {
 
 export function comments(setup: CommentsConfig): Comments {
   Object.defineProperty(window, 'disqus_config', {
+    writable: true,
     value: {
       call(obj: any) {
         obj.page.url = setup.disqus.url
@@ -39,8 +40,6 @@ export function comments(setup: CommentsConfig): Comments {
   })
 
   const thread = create('div', { id: 'disqus_thread' })
-  append(setup.selector, thread)
-
   const script = create('script', {
     async: true,
     'data-timestamp': Date.now(),
@@ -51,6 +50,7 @@ export function comments(setup: CommentsConfig): Comments {
 
     if (container) {
       container.innerHTML = ''
+      append(setup.selector, thread)
       append(setup.selector, script)
     }
   }
