@@ -12,7 +12,8 @@ export class DisqusComments extends LitElement {
   @property({ type: Number }) delay = 0
   @property({ type: Boolean }) onEnter = false
 
-  private comments: Comments
+  private setup: CommentsConfig = {} as CommentsConfig
+  private comments: Comments = {} as Comments
 
   static override styles = css`
     :host {
@@ -20,8 +21,8 @@ export class DisqusComments extends LitElement {
     }
   `
 
-  constructor() {
-    super()
+  override connectedCallback() {
+    super.connectedCallback()
 
     const selector = this.localName
     const disqus: DisqusConfig = {
@@ -32,14 +33,17 @@ export class DisqusComments extends LitElement {
       shortname: this.shortname,
       category_id: this.category_id,
     }
-    const setup: CommentsConfig = {
+
+    this.setup = {
       selector,
       disqus,
       delay: this.delay,
       onEnter: this.onEnter,
     }
+  }
 
-    this.comments = comments(setup)
+  override render() {
+    this.comments = comments(this.setup)
   }
 
   reload() {

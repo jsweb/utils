@@ -1,6 +1,7 @@
 /lib
 /web
 /modules
+/components
 
 # Dependencies
 node_modules

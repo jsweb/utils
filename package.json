@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "jest --watch",
     "test": "tsc --noEmit && jest",
-    "clean": "rm -rf lib modules web",
+    "clean": "rm -rf lib components modules web",
     "upd8": "rm -rf node_modules && pnpm i",
     "g:push": "git push && git push --tags",
     "v:patch": "npm version patch && npm run g:push",
