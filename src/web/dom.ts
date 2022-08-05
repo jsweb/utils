@@ -7,9 +7,8 @@ export { html, head, body }
  * @export
  * @function $
  * @param {string} selector Element selector
- * @return {Element} Element
  */
-export function $(selector: string): Element {
+export function $(selector: string) {
   return document.querySelector(selector)
 }
 
@@ -19,9 +18,8 @@ export function $(selector: string): Element {
  * @export
  * @function $$
  * @param {string} selector Elements selector
- * @return {Element[]} Elements
  */
-export function $$(selector: string): Element[] {
+export function $$(selector: string) {
   const all = document.querySelectorAll(selector)
   return Array.from(all)
 }
@@ -33,9 +31,8 @@ export function $$(selector: string): Element[] {
  * @function create
  * @param {string} tag Element tag name
  * @param {*} [props={}] Element properties
- * @return {HTMLElement} Element created
  */
-export function create(tag: string, props: any = {}): HTMLElement {
+export function create(tag: string, props: any = {}) {
   const elm = document.createElement(tag)
 
   for (const key in props) elm.setAttribute(key, props[key])
@@ -52,7 +49,8 @@ export function create(tag: string, props: any = {}): HTMLElement {
  * @param {Node} child Child element
  */
 export function append(selector: string, child: Node) {
-  $(selector).appendChild(child)
+  const elm = $(selector)
+  if (elm) elm.appendChild(child)
 }
 
 /**
@@ -71,5 +69,6 @@ export function listen(
   handler: EventListenerOrEventListenerObject,
   options?: boolean | AddEventListenerOptions
 ) {
-  $(selector).addEventListener(type, handler, options)
+  const elm = $(selector)
+  if (elm) elm.addEventListener(type, handler, options)
 }

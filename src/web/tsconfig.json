@@ -1,7 +1,0 @@
-{
-  "compilerOptions": {
-    "composite": true,
-    "lib": ["DOM", "ESNext"],
-    "types": ["@cloudflare/workers-types"]
-  }
-}

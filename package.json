@@ -4,14 +4,15 @@
   "type": "module",
   "description": "JS lib with useful stuff for web development",
   "scripts": {
-    "test": "tsc --noEmit && jest",
     "dev": "jest --watch",
+    "test": "tsc --noEmit && jest",
+    "clean": "rm -rf lib modules web",
     "upd8": "rm -rf node_modules && pnpm i",
     "g:push": "git push && git push --tags",
     "v:patch": "npm version patch && npm run g:push",
     "v:minor": "npm version minor && npm run g:push",
     "v:major": "npm version major && npm run g:push",
-    "build:dev": "rm -rf lib modules web && tsc",
+    "build:dev": "pnpm clean && tsc",
     "build:publish": "tsc -p tsconfig.build.json",
     "prepublishOnly": "npm run build:publish"
   },
@@ -22,7 +23,7 @@
   "keywords": [
     "JS",
     "TS",
-    "Web",
+    "web",
     "utilities"
   ],
   "author": "Alex Bruno Cáceres <contato@alexbruno.dev>",
@@ -32,15 +33,16 @@
   },
   "homepage": "https://github.com/jsweb/utils#readme",
   "devDependencies": {
-    "@cloudflare/workers-types": "latest",
-    "@jsweb/params": "latest",
     "@types/jest": "latest",
     "@types/node": "latest",
-    "enter-view": "latest",
     "jest": "latest",
     "jest-environment-jsdom": "latest",
     "ts-jest": "latest",
     "ts-node": "latest",
     "typescript": "latest"
+  },
+  "dependencies": {
+    "@cloudflare/workers-types": "latest",
+    "enter-view": "latest"
   }
 }

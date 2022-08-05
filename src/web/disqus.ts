@@ -1,5 +1,6 @@
 import onEnter from 'enter-view'
 import { $, create, append } from './dom'
+import { getPropertyValue } from '../modules/object'
 
 export interface DisqusConfig {
   url: string
@@ -18,17 +19,19 @@ export interface CommentsConfig {
 }
 
 export function comments(setup: CommentsConfig) {
-  window['disqus_config'] = {
-    call(obj: any) {
-      obj.page.url = setup.disqus.url
-      obj.page.identifier = setup.disqus.identifier
+  Object.defineProperty(window, 'disqus_config', {
+    value: {
+      call(obj: any) {
+        obj.page.url = setup.disqus.url
+        obj.page.identifier = setup.disqus.identifier
 
-      if (setup.disqus.title) obj.page.title = setup.disqus.title
-      if (setup.disqus.shortname) obj.page.shortname = setup.disqus.shortname
-      if (setup.disqus.category_id)
-        obj.page.category_id = setup.disqus.category_id
+        if (setup.disqus.title) obj.page.title = setup.disqus.title
+        if (setup.disqus.shortname) obj.page.shortname = setup.disqus.shortname
+        if (setup.disqus.category_id)
+          obj.page.category_id = setup.disqus.category_id
+      },
     },
-  }
+  })
 
   const thread = create('div', { id: 'disqus_thread' })
   append(setup.container, thread)
@@ -39,10 +42,17 @@ export function comments(setup: CommentsConfig) {
     src: `https://${setup.disqus.site}.disqus.com/embed.js`,
   })
   const load = () => {
-    $(setup.container).innerHTML = ''
-    append(setup.container, script)
+    const container = $(setup.container)
+
+    if (container) {
+      container.innerHTML = ''
+      append(setup.container, script)
+    }
   }
-  const reload = () => window['DISQUS'].reset({ reload: true })
+  const reload = () => {
+    const dqs = getPropertyValue(window, 'DISQUS')
+    if (dqs) dqs.reset({ reload: true })
+  }
 
   if (setup.onEnter)
     onEnter({ once: true, selector: setup.container, enter: load })
