@@ -36,6 +36,7 @@
     "@jsweb/params": "latest",
     "@types/jest": "latest",
     "@types/node": "latest",
+    "enter-view": "latest",
     "jest": "latest",
     "jest-environment-jsdom": "latest",
     "ts-jest": "latest",
