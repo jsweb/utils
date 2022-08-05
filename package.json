@@ -4,16 +4,16 @@
   "type": "module",
   "description": "JS lib with useful stuff for web development",
   "scripts": {
-    "dev": "jest --watch",
+    "clean": "gulp clean",
     "test": "tsc --noEmit && jest",
-    "clean": "rm -rf lib components modules web",
+    "dev": "tsc --noEmit && jest --watch",
     "upd8": "rm -rf node_modules && pnpm i",
     "g:push": "git push && git push --tags",
     "v:patch": "npm version patch && npm run g:push",
     "v:minor": "npm version minor && npm run g:push",
     "v:major": "npm version major && npm run g:push",
-    "build:dev": "pnpm clean && tsc",
-    "build:publish": "tsc -p tsconfig.build.json",
+    "build:dev": "gulp build:dev",
+    "build:publish": "gulp build:publish",
     "prepublishOnly": "npm run build:publish"
   },
   "repository": {
@@ -35,6 +35,9 @@
   "devDependencies": {
     "@types/jest": "latest",
     "@types/node": "latest",
+    "esbuild": "latest",
+    "gulp": "latest",
+    "gulp-esbuild": "latest",
     "jest": "latest",
     "jest-environment-jsdom": "latest",
     "ts-jest": "latest",
