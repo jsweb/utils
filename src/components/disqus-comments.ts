@@ -52,6 +52,6 @@ export class DisqusComments extends LitElement {
   }
 
   reload() {
-    this.comments.reload()
+    setTimeout(() => this.comments.reload(), 128)
   }
 }
