@@ -1,6 +1,7 @@
 import { css, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { comments, Comments, CommentsConfig, DisqusConfig } from '../web/disqus'
+import { after, create } from '../web/dom'
 
 @customElement('disqus-comments')
 export class DisqusComments extends LitElement {
@@ -24,7 +25,11 @@ export class DisqusComments extends LitElement {
   override connectedCallback() {
     super.connectedCallback()
 
-    const selector = this.localName
+    const component = this.localName
+    const container = create('div', { id: component })
+    after(component, container)
+
+    const selector = `#${component}`
     const disqus: DisqusConfig = {
       url: this.url,
       identifier: this.identifier,

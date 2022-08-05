@@ -54,6 +54,18 @@ export function append(selector: string, child: Node) {
 }
 
 /**
+ * Shorthand for Element.insertAdjacentElement('afterend', child)
+ *
+ * @export
+ * @param {string} selector
+ * @param {Element} child
+ */
+export function after(selector: string, child: Element) {
+  const elm = $(selector)
+  if (elm) elm.insertAdjacentElement('afterend', child)
+}
+
+/**
  * Shorthand for Element.addEventListener
  *
  * @export
