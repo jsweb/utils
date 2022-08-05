@@ -33,20 +33,17 @@
   },
   "homepage": "https://github.com/jsweb/utils#readme",
   "devDependencies": {
+    "@cloudflare/workers-types": "latest",
     "@types/jest": "latest",
     "@types/node": "latest",
-    "esbuild": "latest",
+    "enter-view": "latest",
     "gulp": "latest",
     "gulp-esbuild": "latest",
     "jest": "latest",
     "jest-environment-jsdom": "latest",
+    "lit": "latest",
     "ts-jest": "latest",
     "ts-node": "latest",
     "typescript": "latest"
-  },
-  "dependencies": {
-    "@cloudflare/workers-types": "latest",
-    "enter-view": "latest",
-    "lit": "latest"
   }
 }
