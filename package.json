@@ -14,7 +14,7 @@
     "v:major": "npm version major && npm run g:push",
     "build:dev": "gulp build:dev",
     "build:publish": "gulp build:publish",
-    "prepublishOnly": "npm run build:publish"
+    "prepublishOnly": "gulp build:publish"
   },
   "repository": {
     "type": "git",
