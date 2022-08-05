@@ -43,6 +43,7 @@
   },
   "dependencies": {
     "@cloudflare/workers-types": "latest",
-    "enter-view": "latest"
+    "enter-view": "latest",
+    "lit": "latest"
   }
 }

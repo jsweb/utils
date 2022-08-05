@@ -12,13 +12,18 @@ export interface DisqusConfig {
 }
 
 export interface CommentsConfig {
-  container: string
+  selector: string
   disqus: DisqusConfig
   delay?: number
   onEnter?: boolean
 }
 
-export function comments(setup: CommentsConfig) {
+export interface Comments {
+  thread: HTMLElement
+  reload: () => void
+}
+
+export function comments(setup: CommentsConfig): Comments {
   Object.defineProperty(window, 'disqus_config', {
     value: {
       call(obj: any) {
@@ -34,7 +39,7 @@ export function comments(setup: CommentsConfig) {
   })
 
   const thread = create('div', { id: 'disqus_thread' })
-  append(setup.container, thread)
+  append(setup.selector, thread)
 
   const script = create('script', {
     async: true,
@@ -42,11 +47,11 @@ export function comments(setup: CommentsConfig) {
     src: `https://${setup.disqus.site}.disqus.com/embed.js`,
   })
   const load = () => {
-    const container = $(setup.container)
+    const container = $(setup.selector)
 
     if (container) {
       container.innerHTML = ''
-      append(setup.container, script)
+      append(setup.selector, script)
     }
   }
   const reload = () => {
@@ -55,7 +60,7 @@ export function comments(setup: CommentsConfig) {
   }
 
   if (setup.onEnter)
-    onEnter({ once: true, selector: setup.container, enter: load })
+    onEnter({ once: true, selector: setup.selector, enter: load })
   else setTimeout(load, setup.delay || 1)
 
   return { thread, reload }
