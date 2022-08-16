@@ -24,3 +24,21 @@ export function slugify(text: string, options: SlulgifyOptions = {}): string {
 
   return result.trim().replace(/[\W\s]+/g, '-')
 }
+
+/**
+ * Renders a tagged template string with the given data and returns the result string.
+ * Useful to render templates with dynamic data.
+ *
+ * @export
+ * @function templateRender
+ * @param {string} temp
+ * @param {Record<string, any>} data
+ * @return {string}
+ */
+export function template(temp: string, data: Record<string, any>): string {
+  const keys = Object.keys(data)
+  const values = Object.values(data)
+  const render = new Function(...keys, `return \`${temp}\``)
+
+  return render(...values)
+}
