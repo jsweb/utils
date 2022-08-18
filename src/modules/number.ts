@@ -45,3 +45,21 @@ export function formatCurrency(
   })
   return formatter.format(number)
 }
+
+/**
+ * Checks if a given number is between two other numbers (inclusive).
+ *
+ * @export
+ * @function isBetween
+ * @param {number} number A number or a numeric string
+ * @param {number} min The minimum number
+ * @param {number} max The maximum number
+ * @return {boolean}
+ */
+export function isBetween(
+  number: number | string,
+  min: number | string,
+  max: number | string
+): boolean {
+  return number >= min && number <= max
+}

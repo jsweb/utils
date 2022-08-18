@@ -1,4 +1,8 @@
-import { formatNumber, formatCurrency } from '../../src/modules/number'
+import {
+  formatNumber,
+  formatCurrency,
+  isBetween,
+} from '../../src/modules/number'
 
 test('formatNumber', () => {
   const number = 1234567.89
@@ -22,4 +26,8 @@ test('formatCurrency', () => {
   expect(br).toBe('R$\xa01.234.567,89')
   expect(en).toBe('$1,234,567.89')
   expect(fr).toBe('1\u202f234\u202f567,89\xa0€')
+})
+
+test('isBetween', () => {
+  expect(isBetween(256, 128, 512)).toBe(true)
 })

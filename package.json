@@ -5,8 +5,8 @@
   "description": "JS lib with useful stuff for web development",
   "scripts": {
     "clean": "gulp clean",
-    "test": "tsc --noEmit && jest",
-    "dev": "tsc --noEmit && jest --watch",
+    "test": "gulp clean && tsc --noEmit && jest",
+    "dev": "gulp clean && tsc --noEmit && jest --watch",
     "upd8": "rm -rf node_modules && pnpm i",
     "g:push": "git push && git push --tags",
     "v:patch": "npm version patch && npm run g:push",
@@ -34,6 +34,7 @@
   "homepage": "https://github.com/jsweb/utils#readme",
   "devDependencies": {
     "@cloudflare/workers-types": "latest",
+    "@jsweb/params": "latest",
     "@types/jest": "latest",
     "@types/node": "latest",
     "enter-view": "latest",
