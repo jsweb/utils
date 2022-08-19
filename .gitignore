@@ -1,4 +1,5 @@
-/lib
+coverage
+lib
 /web
 /modules
 /components
@@ -14,6 +15,3 @@ yarn.lock
 
 # Build
 *.tsbuildinfo
-
-# Test coverage
-coverage

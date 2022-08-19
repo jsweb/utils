@@ -1,7 +1,7 @@
-import { equal } from 'assert'
+import test from 'ava'
 import { getPropertyValue } from '../../src/modules/object'
 
-test('getPropertyValue', () => {
+test('getPropertyValue', (t) => {
   const obj = {
     a: {
       b: {
@@ -12,15 +12,16 @@ test('getPropertyValue', () => {
       },
     },
   }
+  const def = 'default'
   const t1 = getPropertyValue(obj, 'a.b.c.d')
   const t2 = getPropertyValue(obj, 'a.b.c.e')
   const t3 = getPropertyValue(obj, 'a.b.c.d.e')
-  const t4 = getPropertyValue(obj, 'a.b.c.d.e', 'default')
+  const t4 = getPropertyValue(obj, 'a.b.c.d.e', def)
   const t5 = getPropertyValue(obj, ['a', 'b', 'c', 'e'])
 
-  equal(t1, 0)
-  equal(t2, 'test')
-  equal(t3, undefined)
-  equal(t4, 'default')
-  equal(t5, 'test')
+  t.is(t1, obj.a.b.c.d)
+  t.is(t2, obj.a.b.c.e)
+  t.is(t3, undefined)
+  t.is(t4, def)
+  t.is(t5, obj.a.b.c.e)
 })

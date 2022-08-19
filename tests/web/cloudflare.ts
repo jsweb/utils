@@ -1,18 +1,26 @@
+import test from 'ava'
+import sinon from 'sinon'
 import { ResponseJSON, setRequestMethods } from '../../src/web/cloudflare'
 
-test('ResponseJSON', () => {
-  const response = ResponseJSON()
-  expect(response).toBeInstanceOf(Response)
+Object.defineProperties(global, {
+  Response: {
+    value: sinon.fake(),
+  },
 })
 
-test('setRequestMethods', () => {
+test('ResponseJSON', (t) => {
+  const response = ResponseJSON()
+  t.true(response instanceof Response)
+})
+
+test('setRequestMethods', (t) => {
   const map = { GET: () => ResponseJSON() }
   const ctx = {
     request: {
       method: 'get',
     },
   }
-
   const response = setRequestMethods(ctx, map)
-  expect(response).toBeInstanceOf(Response)
+
+  t.true(response instanceof Response)
 })

@@ -4,17 +4,25 @@
   "type": "module",
   "description": "JS lib with useful stuff for web development",
   "scripts": {
-    "clean": "gulp clean",
-    "test": "gulp clean && tsc --noEmit && jest",
-    "dev": "gulp clean && tsc --noEmit && jest --watch",
-    "upd8": "rm -rf node_modules && pnpm i",
-    "g:push": "git push && git push --tags",
-    "v:patch": "npm version patch && npm run g:push",
-    "v:minor": "npm version minor && npm run g:push",
-    "v:major": "npm version major && npm run g:push",
-    "build:dev": "gulp build:dev",
-    "build:publish": "gulp build:publish",
-    "prepublishOnly": "gulp build:publish"
+    "clean": "rm -rf coverage lib components modules web",
+    "dev": "run-s dev:*",
+    "dev:clean": "npm run clean",
+    "dev:tsc": "tsc --noEmit",
+    "dev:watch": "run-p dev:watch:*",
+    "dev:watch:esbuild": "npm run test:esbuild -- --watch",
+    "dev:watch:ava": "ava -w",
+    "test": "run-s test:*",
+    "test:clean": "npm run clean",
+    "test:tsc": "tsc --noEmit",
+    "test:esbuild": "esbuild tests/**/* --bundle --sourcemap --format=esm --external:ava --external:sinon --outdir=lib/tests",
+    "test:ava": "ava",
+    "build": "run-s build:*",
+    "build:test": "npm t",
+    "build:esbuild": "esbuild src/**/* --bundle --minify --format=esm --outdir=. --tsconfig=tsconfig.build.json",
+    "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
+    "upd8": "rm -rf node_modules pnpm-lock.yaml && pnpm i",
+    "preversion": "npm t && npm run clean",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
@@ -35,16 +43,18 @@
   "devDependencies": {
     "@cloudflare/workers-types": "latest",
     "@jsweb/params": "latest",
-    "@types/jest": "latest",
-    "@types/node": "latest",
+    "@types/sinon": "latest",
+    "ava": "latest",
     "enter-view": "latest",
-    "gulp": "latest",
-    "gulp-esbuild": "latest",
-    "jest": "latest",
-    "jest-environment-jsdom": "latest",
+    "esbuild": "latest",
     "lit": "latest",
-    "ts-jest": "latest",
-    "ts-node": "latest",
+    "npm-run-all": "latest",
+    "sinon": "latest",
     "typescript": "latest"
+  },
+  "ava": {
+    "files": [
+      "lib/tests/**/*"
+    ]
   }
 }

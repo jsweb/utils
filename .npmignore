@@ -1,8 +1,12 @@
-src
-lib
 .github
+coverage
+lib
+src
+tests
 
 # Dependencies
+node_modules
+package-lock.json
 pnpm-lock.yaml
 yarn.lock
 
@@ -13,8 +17,3 @@ yarn.lock
 tsconfig.json
 tsconfig.build.json
 *.tsbuildinfo
-
-# Tests
-tests
-coverage
-jest.config.ts
