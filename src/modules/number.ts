@@ -2,13 +2,13 @@
  * Formats a given number to a localized string.
  *
  * @export
- * @function formatNumber
+ * @function numberFormat
  * @param {number} number A number or a numeric string
  * @param {string} locale A locale code
  * @param {number} [decimals=0] The number of decimals, defaults to 0
  * @return {string} The number formatted
  */
-export function formatNumber(
+export function numberFormat(
   number: number,
   locale: string,
   decimals: number = 0
@@ -24,14 +24,14 @@ export function formatNumber(
  * Formats a given number to a localized currency string.
  *
  * @export
- * @function formatCurrency
+ * @function currencyFormat
  * @param {number} number A number or a numeric string
  * @param {string} locale A locale code
  * @param {string} currency A currency code
  * @param {number} [decimals=0] The number of decimals, defaults to 2
  * @return {string} The currency value formatted
  */
-export function formatCurrency(
+export function currencyFormat(
   number: number,
   locale: string,
   currency: string,
