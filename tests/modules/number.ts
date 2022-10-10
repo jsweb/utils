@@ -1,16 +1,16 @@
 import test from 'ava'
 import {
-  formatNumber,
-  formatCurrency,
+  currencyFormat,
   isBetween,
+  numberFormat,
 } from '../../src/modules/number'
 
-test('formatNumber', (t) => {
+test('numberFormat', (t) => {
   const number = 1234567.89
-  const br = formatNumber(number, 'pt-BR')
-  const en = formatNumber(number, 'en-US')
-  const fr = formatNumber(number, 'fr-FR')
-  const decimals = formatNumber(number, 'pt-BR', 2)
+  const br = numberFormat(number, 'pt-BR')
+  const en = numberFormat(number, 'en-US')
+  const fr = numberFormat(number, 'fr-FR')
+  const decimals = numberFormat(number, 'pt-BR', 2)
 
   t.is(br, '1.234.568')
   t.is(en, '1,234,568')
@@ -18,11 +18,11 @@ test('formatNumber', (t) => {
   t.is(decimals, '1.234.567,89')
 })
 
-test('formatCurrency', (t) => {
+test('currencyFormat', (t) => {
   const number = 1234567.89
-  const br = formatCurrency(number, 'pt-BR', 'BRL')
-  const en = formatCurrency(number, 'en-US', 'USD')
-  const fr = formatCurrency(number, 'fr-FR', 'EUR')
+  const br = currencyFormat(number, 'pt-BR', 'BRL')
+  const en = currencyFormat(number, 'en-US', 'USD')
+  const fr = currencyFormat(number, 'fr-FR', 'EUR')
 
   t.is(br, 'R$\xa01.234.567,89')
   t.is(en, '$1,234,567.89')
