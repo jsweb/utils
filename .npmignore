@@ -1,7 +1,6 @@
 .github
-coverage
-lib
 src
+test
 tests
 
 # Dependencies
