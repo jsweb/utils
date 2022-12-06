@@ -55,7 +55,7 @@ export function comments(setup: CommentsConfig): Comments {
     }
   }
   const reload = () => {
-    const dqs = getPropertyValue(window, 'DISQUS')
+    const dqs = getPropertyValue<any>(window, 'DISQUS')
     if (dqs) dqs.reset({ reload: true })
   }
 
