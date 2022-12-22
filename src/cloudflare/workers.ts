@@ -3,28 +3,28 @@ export interface WorkerEnv {
   [key: string]: any
 }
 
-export interface ApiParams<Env> {
+export interface FunctionParams<Env> {
   req: Request
   env: Env
   url: URL
 }
 
-export interface ApiHandler<Env> {
-  (params: ApiParams<Env>): Response | Promise<Response>
+export interface WorkerFunction<Env> {
+  (params: FunctionParams<Env>): Response | Promise<Response>
 }
 
 export interface ApiMethods {
-  GET?: ApiHandler<any>
-  POST?: ApiHandler<any>
-  PUT?: ApiHandler<any>
-  DELETE?: ApiHandler<any>
-  PATCH?: ApiHandler<any>
-  HEAD?: ApiHandler<any>
-  OPTIONS?: ApiHandler<any>
+  GET?: WorkerFunction<any>
+  POST?: WorkerFunction<any>
+  PUT?: WorkerFunction<any>
+  DELETE?: WorkerFunction<any>
+  PATCH?: WorkerFunction<any>
+  HEAD?: WorkerFunction<any>
+  OPTIONS?: WorkerFunction<any>
 }
 export type HttpMethod = keyof ApiMethods
 
-type ApiMethodsMap = Map<HttpMethod, ApiHandler<WorkerEnv>>
+type ApiMethodsMap = Map<HttpMethod, WorkerFunction<WorkerEnv>>
 
 export class SimpleRouter {
   base = ''
@@ -36,7 +36,7 @@ export class SimpleRouter {
 
   set(path: string, methods: ApiMethods) {
     const endpoint = this.base + path
-    const apis = new Map<HttpMethod, ApiHandler<any>>()
+    const apis = new Map<HttpMethod, WorkerFunction<any>>()
     const keys = Object.keys(methods) as HttpMethod[]
 
     keys.forEach((method) => {
