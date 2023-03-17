@@ -18,7 +18,7 @@ export class DisqusComments extends LitElement {
 
   static override styles = css`
     :host {
-      display: block;
+      display: none;
     }
   `
 
