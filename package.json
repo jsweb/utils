@@ -22,7 +22,7 @@
     "build:dist": "esbuild src/**/* --bundle --minify --format=esm --outdir=. --tsconfig=tsconfig.build.json",
     "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
     "upd8": "rm -rf node_modules pnpm-lock.yaml && pnpm i",
-    "preversion": "npm t && npm run clean",
+    "preversion": "npm t",
     "postversion": "git push && git push --tags"
   },
   "repository": {
@@ -44,6 +44,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "latest",
     "@jsweb/params": "latest",
+    "@jsweb/randkey": "latest",
     "@types/sinon": "latest",
     "ava": "latest",
     "enter-view": "latest",

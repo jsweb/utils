@@ -1,7 +1,7 @@
 import { css, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import { comments, Comments, CommentsConfig, DisqusConfig } from '../web/disqus'
-import { after, create } from '../web/dom'
+import { wuid } from '@jsweb/randkey'
+import type { Comments, CommentsConfig, DisqusConfig } from '../web/disqus'
 
 @customElement('disqus-comments')
 export class DisqusComments extends LitElement {
@@ -22,14 +22,14 @@ export class DisqusComments extends LitElement {
     }
   `
 
-  override connectedCallback() {
-    super.connectedCallback()
+  async setupDisqus() {
+    const { after, create } = await import('../web/dom')
 
+    const id = `disqus-${wuid()}`
     const component = this.localName
-    const container = create('div', { id: component })
+    const container = create('div', { id })
     after(component, container)
 
-    const selector = `#${component}`
     const disqus: DisqusConfig = {
       url: this.url,
       identifier: this.identifier,
@@ -40,18 +40,31 @@ export class DisqusComments extends LitElement {
     }
 
     this.setup = {
-      selector,
       disqus,
+      selector: `#${id}`,
       delay: this.delay,
       onEnter: this.onEnter,
     }
   }
 
-  override render() {
+  async setupComments() {
+    const { comments } = await import('../web/disqus')
     this.comments = comments(this.setup)
   }
 
+  override async render() {
+    await this.setupDisqus()
+    await this.setupComments()
+    return ''
+  }
+
   reload() {
-    setTimeout(() => this.comments.reload(), 128)
+    this.comments.reload()
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'disqus-comments': DisqusComments
   }
 }
