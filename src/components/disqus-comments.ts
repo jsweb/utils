@@ -55,7 +55,6 @@ export class DisqusComments extends LitElement {
   override async render() {
     await this.setupDisqus()
     await this.setupComments()
-    return ''
   }
 
   reload() {
