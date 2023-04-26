@@ -13,7 +13,7 @@ export interface WorkerFunction<Env> {
   (params: FunctionParams<Env>): Response | Promise<Response>
 }
 
-export interface ApiMethods {
+interface ApiMethods {
   GET?: WorkerFunction<any>
   POST?: WorkerFunction<any>
   PUT?: WorkerFunction<any>
@@ -22,8 +22,7 @@ export interface ApiMethods {
   HEAD?: WorkerFunction<any>
   OPTIONS?: WorkerFunction<any>
 }
-export type HttpMethod = keyof ApiMethods
-
+type HttpMethod = keyof ApiMethods
 type ApiMethodsMap = Map<HttpMethod, WorkerFunction<WorkerEnv>>
 
 export class SimpleRouter {
