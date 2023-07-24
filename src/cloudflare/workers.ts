@@ -151,17 +151,17 @@ export class SimpleRouter {
   }
 
   private checkCORS(req: Request) {
-    if (!this.origins.length) {
-      const mode = req.headers.get('Sec-Fetch-Mode') as string
-      const site = req.headers.get('Sec-Fetch-Site') as string
+    const mode = req.headers.get('Sec-Fetch-Mode') as string
+    const site = req.headers.get('Sec-Fetch-Site') as string
+    const navigation = mode.includes('navigate')
+    const sameOrigin = site.includes('same')
 
-      return mode === 'navigate' || site === 'same-origin'
-    }
+    if (!this.origins.length) return navigation || sameOrigin
 
     const all = this.origins.includes('*')
     const origin = req.headers.get('Origin') as string
     const listed = this.origins.includes(origin)
 
-    return all || listed
+    return navigation || sameOrigin || all || listed
   }
 }
