@@ -3,58 +3,93 @@ export interface WorkerEnv {
   [key: string]: any
 }
 
-export interface FunctionParams<Env> {
+export interface WorkerKV extends KVNamespace {}
+
+export interface SimpleRouterFunctionContext<Env> {
   req: Request
   env: Env
   url: URL
+  params: Record<string, string>
 }
 
-export interface WorkerFunction<Env> {
-  (params: FunctionParams<Env>): Response | Promise<Response>
+export interface SimpleRouterWorkerFunction<Env> {
+  (context: SimpleRouterFunctionContext<Env>): Response | Promise<Response>
 }
 
-interface ApiMethods {
-  GET?: WorkerFunction<any>
-  POST?: WorkerFunction<any>
-  PUT?: WorkerFunction<any>
-  DELETE?: WorkerFunction<any>
-  PATCH?: WorkerFunction<any>
-  HEAD?: WorkerFunction<any>
-  OPTIONS?: WorkerFunction<any>
+export interface SimpleRouterCORS {
+  origins: string[]
 }
-type HttpMethod = keyof ApiMethods
-type ApiMethodsMap = Map<HttpMethod, WorkerFunction<WorkerEnv>>
+
+interface SimpleRouterApiMethods {
+  GET?: SimpleRouterWorkerFunction<WorkerEnv>
+  POST?: SimpleRouterWorkerFunction<WorkerEnv>
+  PUT?: SimpleRouterWorkerFunction<WorkerEnv>
+  DELETE?: SimpleRouterWorkerFunction<WorkerEnv>
+  PATCH?: SimpleRouterWorkerFunction<WorkerEnv>
+  HEAD?: SimpleRouterWorkerFunction<WorkerEnv>
+  OPTIONS?: SimpleRouterWorkerFunction<WorkerEnv>
+}
+type HttpMethod = keyof SimpleRouterApiMethods
+type SimpleRouterApiMethodsMap = Map<
+  HttpMethod,
+  SimpleRouterWorkerFunction<WorkerEnv>
+>
 
 export class SimpleRouter {
   base = ''
-  private map = new Map<string, ApiMethodsMap>()
+  origins = [] as string[]
 
-  constructor(base: string) {
+  private map = new Map<string, SimpleRouterApiMethodsMap>()
+
+  constructor(base: string, cors?: SimpleRouterCORS) {
     this.base = base
+
+    if (cors) this.origins = cors.origins
   }
 
-  set(path: string, methods: ApiMethods) {
-    const endpoint = this.base + path
-    const apis = new Map<HttpMethod, WorkerFunction<any>>()
-    const keys = Object.keys(methods) as HttpMethod[]
+  set(path: string, methods: SimpleRouterApiMethods) {
+    const endpoint = this.base.concat(path)
+    const api = new Map<HttpMethod, SimpleRouterWorkerFunction<WorkerEnv>>()
 
-    keys.forEach((method) => {
-      const handler = methods[method]
-      if (handler instanceof Function) apis.set(method, handler)
-    })
+    for (const method in methods) {
+      const handler = methods[method as HttpMethod]
+      if (handler instanceof Function) api.set(method as HttpMethod, handler)
+    }
 
-    this.map.set(endpoint, apis)
+    this.map.set(endpoint, api)
   }
 
-  response(req: Request, env: WorkerEnv, url: URL) {
-    const endpoint = this.map.get(url.pathname)
-    if (!endpoint)
-      return new Response(null, { status: 404, statusText: 'Not found' })
+  async response(req: Request, env: WorkerEnv, url: URL) {
+    const api = this.findByUrlPattern(url)
+    const origin = req.headers.get('Origin') as string
+    const headers = this.origins.length
+      ? ({
+          'Access-Control-Allow-Origin': origin,
+        } as HeadersInit)
+      : undefined
 
-    const handler = endpoint.get(req.method as HttpMethod)
-    if (handler instanceof Function) return handler({ req, env, url })
-    else
+    if (!api)
       return new Response(null, {
+        headers,
+        status: 404,
+        statusText: 'Not found',
+      })
+
+    const endpoint = this.map.get(api) as SimpleRouterApiMethodsMap
+    const handler = endpoint.get(req.method as HttpMethod)
+    const params = this.extractUrlParams(api, url)
+
+    if (handler instanceof Function) {
+      const context = { req, env, url, params }
+      const response = await handler(context)
+
+      if (this.origins.length)
+        response.headers.set('Access-Control-Allow-Origin', origin)
+
+      return response
+    } else
+      return new Response(null, {
+        headers,
         status: 405,
         statusText: 'Method not allowed',
       })
@@ -62,7 +97,12 @@ export class SimpleRouter {
 
   handler(...routers: SimpleRouter[]) {
     return {
-      fetch: (req: Request, env: WorkerEnv) => {
+      fetch: async (req: Request, env: WorkerEnv) => {
+        const cors = this.checkCORS(req)
+
+        if (!cors)
+          return new Response(null, { status: 403, statusText: 'Forbidden' })
+
         const url = new URL(req.url)
         const instances = [this, ...routers]
 
@@ -71,8 +111,50 @@ export class SimpleRouter {
           if (api) return router.response(req, env, url)
         }
 
-        return env.ASSETS.fetch(req)
+        const response = await env.ASSETS.fetch(req)
+
+        if (this.origins.length) {
+          const origin = req.headers.get('Origin') as string
+          response.headers.set('Access-Control-Allow-Origin', origin)
+        }
+
+        return response
       },
     }
+  }
+
+  private findByUrlPattern(url: URL) {
+    const apis = this.map.keys()
+
+    return Array.from(apis).find((pathname) => {
+      const pattern = new URLPattern({ pathname })
+      return pattern.test(url)
+    })
+  }
+
+  private extractUrlParams(pathname: string, url: URL) {
+    const keys = pathname.split('/')
+    const values = url.pathname.split('/')
+    const params = keys.reduce((result, key, i) => {
+      if (key.startsWith(':')) result[key.slice(1)] = values[i]
+      return result
+    }, {} as Record<string, string>)
+
+    return params
+  }
+
+  private checkCORS(req: Request) {
+    if (!this.origins.length) {
+      const mode = req.headers.get('Sec-Fetch-Mode') as string
+      const site = req.headers.get('Sec-Fetch-Site') as string
+
+      return mode === 'navigate' || site === 'same-origin'
+    }
+
+    const all = this.origins.includes('*')
+    const origin = req.headers.get('Origin') as string
+    const listed = this.origins.includes(origin)
+
+    return all || listed
   }
 }
