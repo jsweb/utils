@@ -138,11 +138,13 @@ export class SimpleRouter {
     const params = new Map<string, string>()
 
     keys.forEach((key, i) => {
-      if (!key.startsWith(':')) return undefined
+      if (!key.startsWith(':')) return false
 
       const name = key.slice(1)
       const value = values[i]
       params.set(name, value)
+
+      return true
     })
 
     return params
