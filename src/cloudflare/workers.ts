@@ -9,7 +9,7 @@ export interface SimpleRouterFunctionContext<Env> {
   req: Request
   env: Env
   url: URL
-  params: Record<string, string>
+  params: Map<string, string>
 }
 
 export interface SimpleRouterWorkerFunction<Env> {
@@ -135,10 +135,15 @@ export class SimpleRouter {
   private extractUrlParams(pathname: string, url: URL) {
     const keys = pathname.split('/')
     const values = url.pathname.split('/')
-    const params = keys.reduce((result, key, i) => {
-      if (key.startsWith(':')) result[key.slice(1)] = values[i]
-      return result
-    }, {} as Record<string, string>)
+    const params = new Map<string, string>()
+
+    keys.forEach((key, i) => {
+      if (!key.startsWith(':')) return undefined
+
+      const name = key.slice(1)
+      const value = values[i]
+      params.set(name, value)
+    })
 
     return params
   }
