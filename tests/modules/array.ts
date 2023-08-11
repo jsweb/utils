@@ -1,5 +1,5 @@
 import test from 'ava'
-import { getRandomItem } from '../../src/modules/array'
+import { getRandomItem, sumValues } from '../../src/modules/array'
 
 test('getRandomItem', (t) => {
   const array = [1, 2, 3, 4, 5]
@@ -7,4 +7,11 @@ test('getRandomItem', (t) => {
   const exist = array.includes(random)
 
   t.true(exist)
+})
+
+test('sumValues', (t) => {
+  const array = [1, 2, 3, 4, 5]
+  const sum = sumValues(array)
+
+  t.is(sum, 15)
 })
