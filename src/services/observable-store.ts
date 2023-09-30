@@ -31,7 +31,9 @@ export class ObservableStore {
   public set(key: string, value: any): any {
     if (value !== this.get(key)) {
       this.state.set(key, value)
-      this.listeners.forEach((listener) => listener(key, value))
+      this.listeners.forEach(
+        (listener) => listener.key === key && listener.callback(key, value)
+      )
     }
     return value
   }
@@ -44,9 +46,9 @@ export class ObservableStore {
    * @memberof ObservableStore
    */
   public subscribe(key: string, listener: Function) {
-    this.listeners.set(`${key}:${listener}`, (change: string, value: any) => {
-      if (change === key) listener(value)
-    })
+    const callback = (change: string, value: any) =>
+      change === key && listener(value)
+    this.listeners.set(listener, { key, callback })
   }
 
   /**
@@ -57,6 +59,7 @@ export class ObservableStore {
    * @memberof ObservableStore
    */
   public unsubscribe(key: string, listener: Function) {
-    this.listeners.delete(`${key}:${listener}`)
+    const target = this.listeners.get(listener)
+    if (target?.key === key) this.listeners.delete(listener)
   }
 }
