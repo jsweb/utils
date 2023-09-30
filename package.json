@@ -4,7 +4,7 @@
   "type": "module",
   "description": "JS lib with useful stuff for web development",
   "scripts": {
-    "clean": "rm -rf cloudflare components modules web test",
+    "clean": "rm -rf cloudflare components modules services web test",
     "dev": "run-s dev:*",
     "dev:clean": "npm run clean",
     "dev:tsc": "tsc --noEmit",

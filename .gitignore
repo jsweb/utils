@@ -3,6 +3,7 @@
 /modules
 /components
 /cloudflare
+/services
 
 # Dependencies
 node_modules
