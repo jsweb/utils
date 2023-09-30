@@ -57,6 +57,7 @@ export function append(selector: string, child: Node) {
  * Shorthand for Element.insertAdjacentElement('afterend', child)
  *
  * @export
+ * @function after
  * @param {string} selector
  * @param {Element} child
  */
@@ -75,7 +76,7 @@ export function after(selector: string, child: Element) {
  * @param {EventListenerOrEventListenerObject} handler Event handler
  * @param {(boolean | AddEventListenerOptions)} [options]
  */
-export function listen(
+export function on(
   selector: string,
   type: string,
   handler: EventListenerOrEventListenerObject,
@@ -83,4 +84,112 @@ export function listen(
 ) {
   const elm = $(selector)
   if (elm) elm.addEventListener(type, handler, options)
+}
+
+/**
+ * Shorthand for Element.removeEventListener
+ *
+ * @export
+ * @function off
+ * @param {string} selector Element selector
+ * @param {string} type Event type
+ * @param {EventListenerOrEventListenerObject} handler Event handler
+ * @param {(boolean | AddEventListenerOptions)} [options]
+ */
+export function off(
+  selector: string,
+  type: string,
+  handler: EventListenerOrEventListenerObject,
+  options?: boolean | EventListenerOptions
+) {
+  const elm = $(selector)
+  if (elm) elm.removeEventListener(type, handler, options)
+}
+
+type EntryIntersectionObserverCallback = (
+  entry: IntersectionObserverEntry,
+  index: number,
+  array: IntersectionObserverEntry[]
+) => void
+/**
+ * Shorthand for IntersectionObserver.
+ * Can observe one or multiple elements.
+ *
+ * @export
+ * @function observeIntersection
+ * @param {string} selector Element selector
+ * @param {EntryIntersectionObserverCallback} callback IntersectionObserver callback
+ * @param {IntersectionObserverInit} [options] IntersectionObserver options
+ * @returns {IntersectionObserver}
+ * @example
+ * observeIntersection('.lazy', callback, options?)
+ */
+export function observeIntersection(
+  selector: string,
+  callback: EntryIntersectionObserverCallback,
+  options?: IntersectionObserverInit
+): IntersectionObserver {
+  const observer = new IntersectionObserver(
+    (entries) => entries.forEach(callback),
+    options
+  )
+  const all = $$(selector)
+  all.forEach((elm) => observer.observe(elm))
+  return observer
+}
+
+/**
+ * Shorthand for IntersectionObserver executin the callback just once.
+ * Can observe one or multiple elements.
+ *
+ * @export
+ * @function observeIntersectionOnce
+ * @param {string} selector Element selector
+ * @param {EntryIntersectionObserverCallback} callback IntersectionObserver callback
+ * @param {IntersectionObserverInit} [options] IntersectionObserver options
+ * @returns {IntersectionObserver}
+ * @example
+ * observeIntersectionOnce('.lazy', callback, options?)
+ */
+export function observeIntersectionOnce(
+  selector: string,
+  callback: EntryIntersectionObserverCallback,
+  options?: IntersectionObserverInit
+): IntersectionObserver {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(callback)
+    observer.disconnect()
+  }, options)
+  const all = $$(selector)
+  all.forEach((elm) => observer.observe(elm))
+  return observer
+}
+
+/**
+ * Shorthand for IntersectionObserver executin the callback just once for each element.
+ * Can observe one or multiple elements.
+ *
+ * @export
+ * @function observeIntersectionOnceForEach
+ * @param {string} selector Element selector
+ * @param {EntryIntersectionObserverCallback} callback IntersectionObserver callback
+ * @param {IntersectionObserverInit} [options] IntersectionObserver options
+ * @returns {IntersectionObserver}
+ * @example
+ * observeIntersectionOnceForEach('.lazy', callback, options?)
+ */
+export function observeIntersectionOnceForEach(
+  selector: string,
+  callback: EntryIntersectionObserverCallback,
+  options?: IntersectionObserverInit
+): IntersectionObserver {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, index, array) => {
+      callback(entry, index, array)
+      observer.unobserve(entry.target)
+    })
+  }, options)
+  const all = $$(selector)
+  all.forEach((elm) => observer.observe(elm))
+  return observer
 }
