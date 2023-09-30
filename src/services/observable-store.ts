@@ -5,7 +5,7 @@
  *
  * @class ObservableStore
  */
-class ObservableStore {
+export class ObservableStore {
   private state = new Map()
   private listeners = new Map()
 
