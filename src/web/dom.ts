@@ -139,7 +139,7 @@ export function observeIntersection(
 }
 
 /**
- * Shorthand for IntersectionObserver executin the callback just once.
+ * Shorthand for IntersectionObserver executing the callback just once.
  * Can observe one or multiple elements.
  *
  * @export
@@ -156,17 +156,21 @@ export function observeIntersectionOnce(
   callback: EntryIntersectionObserverCallback,
   options?: IntersectionObserverInit
 ): IntersectionObserver {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(callback)
-    observer.disconnect()
-  }, options)
-  const all = $$(selector)
-  all.forEach((elm) => observer.observe(elm))
+  const observer = observeIntersection(
+    selector,
+    (entry, index, array) => {
+      if (entry.isIntersecting) {
+        callback(entry, index, array)
+        observer.disconnect()
+      }
+    },
+    options
+  )
   return observer
 }
 
 /**
- * Shorthand for IntersectionObserver executin the callback just once for each element.
+ * Shorthand for IntersectionObserver executing the callback once for each element.
  * Can observe one or multiple elements.
  *
  * @export
@@ -183,13 +187,15 @@ export function observeIntersectionOnceForEach(
   callback: EntryIntersectionObserverCallback,
   options?: IntersectionObserverInit
 ): IntersectionObserver {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index, array) => {
-      callback(entry, index, array)
-      observer.unobserve(entry.target)
-    })
-  }, options)
-  const all = $$(selector)
-  all.forEach((elm) => observer.observe(elm))
+  const observer = observeIntersection(
+    selector,
+    (entry, index, array) => {
+      if (entry.isIntersecting) {
+        callback(entry, index, array)
+        observer.unobserve(entry.target)
+      }
+    },
+    options
+  )
   return observer
 }
