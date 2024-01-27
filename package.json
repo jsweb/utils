@@ -4,7 +4,7 @@
   "type": "module",
   "description": "JS lib with useful stuff for web development",
   "scripts": {
-    "clean": "rm -rf cloudflare components modules services web test",
+    "clean": "rimraf cloudflare components modules services web test",
     "dev": "run-s dev:*",
     "dev:clean": "npm run clean",
     "dev:tsc": "tsc --noEmit",
@@ -21,7 +21,7 @@
     "build:test": "npm t",
     "build:dist": "esbuild src/**/* --bundle --minify --format=esm --outdir=. --tsconfig=tsconfig.build.json",
     "build:types": "tsc -p tsconfig.build.json --emitDeclarationOnly",
-    "upd8": "rm -rf node_modules pnpm-lock.yaml && pnpm i",
+    "upd8": "rimraf node_modules pnpm-lock.yaml && pnpm i",
     "preversion": "npm t",
     "postversion": "git push --follow-tags"
   },
@@ -51,6 +51,7 @@
     "esbuild": "latest",
     "lit": "latest",
     "npm-run-all": "latest",
+    "rimraf": "latest",
     "sinon": "latest",
     "typescript": "latest"
   },
