@@ -1,6 +1,6 @@
 {
   "name": "@jsweb/utils",
-  "version": "0.13.1",
+  "version": "1.0.0",
   "type": "module",
   "description": "JS lib with useful stuff for web development",
   "scripts": {
