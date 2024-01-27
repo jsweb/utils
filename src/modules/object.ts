@@ -16,7 +16,7 @@ export function getPropertyValue<T>(
   obj: any,
   path: string | string[],
   value?: any
-): T | undefined {
+) {
   let current = obj
 
   const split = (key: string) =>
