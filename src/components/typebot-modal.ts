@@ -26,18 +26,22 @@ export default {
 
       const tp = document.querySelector('typebot-popup') as HTMLElement
 
-      observeMutation(tp.shadowRoot ?? tp, (record) => {
-        record.addedNodes.forEach((node) => {
-          node.childNodes.forEach((child) => {
-            const link = child.textContent?.includes('Made with Typebot')
-            if (link) {
-              const tag = child as HTMLAnchorElement
-              tag.removeAttribute('id')
-              tag.remove()
-            }
+      observeMutation(
+        tp.shadowRoot ?? tp,
+        (record) => {
+          record.addedNodes.forEach((node) => {
+            node.childNodes.forEach((child) => {
+              const link = child.textContent?.includes('Made with Typebot')
+              if (link) {
+                const tag = child as HTMLAnchorElement
+                tag.removeAttribute('id')
+                tag.remove()
+              }
+            })
           })
-        })
-      })
+        },
+        { childList: true, subtree: true }
+      )
     } else console.error('Failed to open Typebot')
   },
 
