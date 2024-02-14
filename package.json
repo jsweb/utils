@@ -47,7 +47,6 @@
     "@jsweb/randkey": "latest",
     "@types/sinon": "latest",
     "ava": "latest",
-    "enter-view": "latest",
     "esbuild": "latest",
     "lit": "latest",
     "npm-run-all": "latest",

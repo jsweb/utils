@@ -131,16 +131,8 @@ export class JustFetch {
     if (data) {
       if (data instanceof FormData) {
         init.body = data
-        // init.headers = {
-        //   ...init.headers,
-        //   'Content-Type': `multipart/form-data`,
-        // }
       } else if (data instanceof HTMLFormElement) {
         init.body = new FormData(data)
-        // init.headers = {
-        //   ...init.headers,
-        //   'Content-Type': 'multipart/form-data',
-        // }
       } else if (typeof data === 'object') {
         init.body = JSON.stringify(data)
         init.headers = {

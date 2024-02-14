@@ -1,5 +1,4 @@
-import onEnter from 'enter-view'
-import { $, create, append } from './dom'
+import { $, create, append, observeIntersectionOnce } from './dom'
 import { getPropertyValue } from '../modules/object'
 
 export interface DisqusConfig {
@@ -15,7 +14,7 @@ export interface CommentsConfig {
   selector: string
   disqus: DisqusConfig
   delay?: number
-  onEnter?: boolean
+  onEnterView?: boolean
 }
 
 export interface Comments {
@@ -59,8 +58,8 @@ export function comments(setup: CommentsConfig): Comments {
     if (dqs) setTimeout(() => dqs.reset({ reload: true }), 128)
   }
 
-  if (setup.onEnter)
-    onEnter({ once: true, selector: setup.selector, enter: load })
+  if (setup.onEnterView)
+    observeIntersectionOnce(setup.selector, load, { threshold: 0.1 })
   else setTimeout(load, setup.delay || 1)
 
   return { thread, reload }

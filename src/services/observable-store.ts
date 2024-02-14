@@ -32,7 +32,7 @@ export class ObservableStore {
     if (value !== this.get(key)) {
       this.state.set(key, value)
       this.listeners.forEach(
-        (listener) => listener.key === key && listener.callback(key, value)
+        (listener) => listener.key === key && listener.callback(value)
       )
     }
     return value
@@ -46,9 +46,7 @@ export class ObservableStore {
    * @memberof ObservableStore
    */
   public subscribe(key: string, listener: Function) {
-    const callback = (change: string, value: any) =>
-      change === key && listener(value)
-    this.listeners.set(listener, { key, callback })
+    this.listeners.set(listener, { key, callback: listener })
   }
 
   /**
