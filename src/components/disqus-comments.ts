@@ -1,6 +1,6 @@
+import { wuid } from '@jsweb/randkey'
 import { css, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import { wuid } from '@jsweb/randkey'
 import type { Comments, CommentsConfig, DisqusConfig } from '../web/disqus'
 
 @customElement('disqus-comments')
@@ -11,7 +11,7 @@ export class DisqusComments extends LitElement {
   @property({ type: String }) shortname = ''
   @property({ type: Number }) delay = 0
   @property({ type: String, attribute: 'category-id' }) category_id = ''
-  @property({ type: Boolean, attribute: 'on-enter' }) onEnter = false
+  @property({ type: Boolean, attribute: 'on-enter-view' }) onEnterView = false
 
   private setup: CommentsConfig = {} as CommentsConfig
   private comments: Comments = {} as Comments
@@ -43,7 +43,7 @@ export class DisqusComments extends LitElement {
       disqus,
       selector: `#${id}`,
       delay: this.delay,
-      onEnter: this.onEnter,
+      onEnterView: this.onEnterView,
     }
   }
 
