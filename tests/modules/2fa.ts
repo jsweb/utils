@@ -3,7 +3,7 @@ import test from 'ava'
 import { generateSecretKey, checkUserOTP } from '../../src/modules/2fa'
 
 test('generateSecretKey', async (t) => {
-  const { qrcode, secret } = await generateSecretKey('Test App', 'username')
+  const { qrcode, secret } = generateSecretKey('My Secure Web App', 'username')
 
   // await writeFile('2fa.txt', qrcode)
 

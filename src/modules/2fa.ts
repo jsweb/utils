@@ -1,18 +1,23 @@
 import { TOTP } from 'otpauth'
 import QRCode from 'qrcode-svg'
 
+interface ActivationSecretKey {
+  secret: string
+  qrcode: string
+}
+
 /**
  * Generates a user secret key for a two-factor authentication (2FA) system.
  * Returns the secret key along with a QR code image for authenticator app activation.
  *
  * @param {string} app - The name of the application for which the secret key is generated.
  * @param {string} user - The username of the user for whom the secret key is generated.
- * @return {Promise<{secret: string, qrcode: string}>} - A promise that resolves to an object containing the secret key and the QR code image encoded in base64 format for browsers.
+ * @return {ActivationSecretKey} The secret key along with a QR code image for authenticator app activation.
  */
-export async function generateSecretKey(
+export function generateSecretKey(
   app: string,
   user: string
-): Promise<{ secret: string; qrcode: string }> {
+): ActivationSecretKey {
   const totp = new TOTP({ issuer: app, label: user })
   const uri = totp.toString()
 
