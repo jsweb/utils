@@ -20,7 +20,7 @@ export default {
    * @example
    * init('my-typebot-id', 'standard', { ... })
    */
-  init(typebot: string, component: methods, config = {}) {
+  init(typebot: string, component: methods, config: object = {}) {
     let script = $('#jsweb-tpbtmdl')
 
     if (!script) {
@@ -45,7 +45,7 @@ export default {
   open() {
     const Typebot = getPropertyValue(window, 'Typebot') as any
     if (Typebot) {
-      Typebot.open()
+      Typebot.toggle()
       TypebotCleanUp()
     } else console.error('Failed to open Typebot')
   },
@@ -55,7 +55,7 @@ export default {
    */
   close() {
     const Typebot = getPropertyValue(window, 'Typebot') as any
-    if (Typebot) Typebot.close()
+    if (Typebot) Typebot.toggle()
     else console.error('Failed to close Typebot')
   },
 
@@ -64,8 +64,10 @@ export default {
    */
   toggle() {
     const Typebot = getPropertyValue(window, 'Typebot') as any
-    if (Typebot) Typebot.toggle()
-    else console.error('Failed to toggle Typebot')
+    if (Typebot) {
+      Typebot.toggle()
+      TypebotCleanUp()
+    } else console.error('Failed to toggle Typebot')
   },
 }
 
