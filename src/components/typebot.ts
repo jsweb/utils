@@ -2,9 +2,9 @@ import { $, $$, create, observeMutation } from '../web/dom'
 import { getPropertyValue } from '../modules/object'
 
 const types = {
-  standard: 'initStandard',
   popup: 'initPopup',
   bubble: 'initBubble',
+  standard: 'initStandard',
 }
 type methods = keyof typeof types
 
@@ -21,10 +21,11 @@ export default {
    * init('my-typebot-id', 'standard', { ... })
    */
   init(typebot: string, component: methods, config: object = {}) {
-    let script = $('#jsweb-tpbtmdl')
+    const id = 'jsweb-tpbtmdl'
+    let script = $(`#${id}`)
 
     if (!script) {
-      const method = getPropertyValue<methods>(types, component, 'initStandard')
+      const method = getPropertyValue(types, component, 'initStandard')
       const setup = JSON.stringify({ ...config, typebot })
       const js = [
         `import Typebot from 'https://cdn.jsdelivr.net/npm/@typebot.io/js/dist/web.js'`,
@@ -33,7 +34,7 @@ export default {
       const blob = new Blob([js], { type: 'application/javascript' })
       const src = URL.createObjectURL(blob)
 
-      script = create('script', { id: 'typebot', type: 'module', src })
+      script = create('script', { id, src, type: 'module' })
 
       document.head.appendChild(script)
     }
@@ -43,9 +44,9 @@ export default {
    * Opens Typebot if available, otherwise logs an error.
    */
   open() {
-    const Typebot = getPropertyValue(window, 'Typebot') as any
+    const Typebot = getPropertyValue(window, 'Typebot')
     if (Typebot) {
-      Typebot.toggle()
+      Typebot.open()
       TypebotCleanUp()
     } else console.error('Failed to open Typebot')
   },
@@ -54,8 +55,8 @@ export default {
    * Closes the Typebot if available, otherwise logs an error.
    */
   close() {
-    const Typebot = getPropertyValue(window, 'Typebot') as any
-    if (Typebot) Typebot.toggle()
+    const Typebot = getPropertyValue(window, 'Typebot')
+    if (Typebot) Typebot.close()
     else console.error('Failed to close Typebot')
   },
 
@@ -63,7 +64,7 @@ export default {
    * Toggles Typebot if available, otherwise logs an error.
    */
   toggle() {
-    const Typebot = getPropertyValue(window, 'Typebot') as any
+    const Typebot = getPropertyValue(window, 'Typebot')
     if (Typebot) {
       Typebot.toggle()
       TypebotCleanUp()
