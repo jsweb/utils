@@ -83,10 +83,12 @@ function TypebotCleanUp() {
           const link = elm.querySelector('a')
           const brand = link?.href?.includes('typebot.io')
 
-          if (!link || !brand) return undefined
-
-          link.removeAttribute('id')
-          link.remove()
+          if (link && brand) {
+            link.textContent = ''
+            link.style.border = 'none'
+            link.style.cursor = 'default'
+            link.addEventListener('click', (e) => e.preventDefault())
+          }
         })
       },
       { childList: true, subtree: true }
